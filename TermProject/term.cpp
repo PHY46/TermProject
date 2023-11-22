@@ -30,14 +30,14 @@ int main() {
     }
 
     string input = "";
-    while (!current_words.empty()) {
+    while (true) {
         clearScreen();  // 화면 지우기
 
         for (const auto& word : current_words) {  // 단어 목록 출력
             cout << word << endl;
         }
 
-        cout << "Enter a word: ";
+        cout << "Enter a word (" << "\"exit\"" << " to quit): ";
         cin >> input;
         cin.ignore();
 
@@ -57,40 +57,35 @@ int main() {
                 used_words.push_back(input);  // 사용된 단어 추가
                 score += 10;  // 점수 증가
 
-                // 줄 이동
-                for (auto iter = it; iter != current_words.begin(); --iter) {
-                    iter->swap(*(iter - 1));
+                // 맨 아래 단어가 아니면 맨 아래 단어를 벡터에서 제거하고, 그 위에 있는 단어들을 한 줄씩 아래로 내려오게 하고, miss 증가
+                if (it != current_words.end() - 1) {
+                    current_words.erase(current_words.end() - 1);
+                    miss++;
+
+                    // 줄 이동
+                    for (auto iter = it; iter != current_words.begin(); --iter) {
+                        iter->swap(*(iter - 1));
+                    }
+                }
+                else {
+                    // 맨 아래 단어를 벡터에서 제거
+                    current_words.erase(it);
                 }
 
                 // 새 단어 추가
                 if (!words.empty()) {
                     int index = rand() % words.size();
                     int space = rand() % 4 * 10;  // 콘솔창을 x축으로 4등분하여 랜덤한 위치에 문자열 출력
-                    current_words[0] = string(space, ' ') + words[index];  // 맨 위에 새 단어 추가
+                    current_words.insert(current_words.begin(), string(space, ' ') + words[index]);  // 맨 위에 새 단어 추가
                     words.erase(words.begin() + index);
                 }
-
-                // 단어가 모두 공백이 된 경우 벡터에서 제거
-                if (it->find_first_not_of(' ') == string::npos) {
-                    current_words.erase(it);
+                else {
+                    // 새 단어가 없으면 빈 문자열 추가
+                    current_words.insert(current_words.begin(), "");
                 }
 
                 break;  // 단어를 찾아서 변경하고 새로운 단어를 추가했으므로 더 이상 반복할 필요 없음
             }
-        }
-
-        // 맨 아래 단어가 삭제되는 경우 miss 증가
-        if (current_words.size() == 10 && current_words.back().find_first_not_of(' ') == string::npos) {
-            current_words.pop_back();
-            miss++;
-        }
-
-        // 모든 단어가 사용되었는지 확인
-        if (used_words.size() == 13) {
-            cout << "All words have been used and deleted. Game over!" << endl;
-            cout << "Missed: " << miss << endl;  // 더 이상 이동할 수 없는 단어의 수 출력
-            cout << "Score: " << score << endl;  // 점수 출력
-            break;
         }
     }
 
