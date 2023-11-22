@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <algorithm>
 #include <cstdlib>
 #include <ctime>
 
@@ -12,9 +11,23 @@ void clearScreen() {
     cout << "\033[2J\033[1;1H";
 }
 
+// 랜덤한 알파벳 소문자를 생성하는 함수
+char createRandomAlphabet() {
+    return 'a' + rand() % 26;
+}
+
+// 최대 8글자의 랜덤한 알파벳 소문자로 구성된 단어를 생성하는 함수
+string createRandomWord() {
+    int length = rand() % 8 + 1;
+    string word = "";
+    for (int i = 0; i < length; i++) {
+        word += createRandomAlphabet();
+    }
+    return word;
+}
+
 int main() {
     srand(static_cast<unsigned int>(time(0)));
-    vector<string> words = { "apple", "banana", "cherry", "durian", "elephant", "falcon", "giraffe", "orange", "grape", "bear", "cat", "dog", "duck" };
     vector<string> current_words(10, "");  // 10줄의 단어 목록
     vector<string> used_words; // 사용된 단어들을 저장하는 벡터
     int miss = 0;  // 더 이상 이동할 수 없는 단어의 수
@@ -22,11 +35,8 @@ int main() {
 
     // 새 단어 추가
     for (auto& word : current_words) {
-        if (words.empty()) break; // 단어가 더 이상 없으면 종료
-        int index = rand() % words.size();
-        int space = rand() % 4 * 10;  // 콘솔창을 x축으로 4등분하여 랜덤한 위치에 문자열 출력
-        word = string(space, ' ') + words[index];  // 해당 위치의 단어 목록에 추가
-        words.erase(words.begin() + index);
+        int space = rand() % 4 * 20;  // 콘솔창을 x축으로 4등분하여 랜덤한 위치에 문자열 출력
+        word = string(space, ' ') + createRandomWord();  // 해당 위치의 단어 목록에 추가
     }
 
     string input = "";
@@ -73,16 +83,8 @@ int main() {
                 }
 
                 // 새 단어 추가
-                if (!words.empty()) {
-                    int index = rand() % words.size();
-                    int space = rand() % 4 * 10;  // 콘솔창을 x축으로 4등분하여 랜덤한 위치에 문자열 출력
-                    current_words.insert(current_words.begin(), string(space, ' ') + words[index]);  // 맨 위에 새 단어 추가
-                    words.erase(words.begin() + index);
-                }
-                else {
-                    // 새 단어가 없으면 빈 문자열 추가
-                    current_words.insert(current_words.begin(), "");
-                }
+                int space = rand() % 4 * 10;  // 콘솔창을 x축으로 4등분하여 랜덤한 위치에 문자열 출력
+                current_words.insert(current_words.begin(), string(space, ' ') + createRandomWord());  // 맨 위에 새 단어 추가
 
                 break;  // 단어를 찾아서 변경하고 새로운 단어를 추가했으므로 더 이상 반복할 필요 없음
             }
