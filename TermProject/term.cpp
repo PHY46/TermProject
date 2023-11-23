@@ -96,7 +96,7 @@ void printWords(const vector<string>& current_words) {
     while (true) {
         if (!isInputting)
         {
-            system("cls");  // 화면 지우기
+        system("cls");  // 화면 지우기
             mtx.lock();  // 뮤텍스 잠그기
             for (const auto& word : current_words) {  // 단어 목록 출력
                 cout << word << endl;
