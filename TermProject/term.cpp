@@ -58,7 +58,7 @@ class SpecialCharacterDecorator : public WordCreator {
 public:
     SpecialCharacterDecorator(WordCreator* wordCreator) : wordCreator(wordCreator) {}
     string createWord(int length) override {
-        string specialCharacters = "!@#$%^&*()";
+        string specialCharacters = "/!@#$%^&*()~";
         string word = wordCreator->createWord(length);
         if (length > 1) {
             word[rand() % length] = specialCharacters[rand() % specialCharacters.size()];
