@@ -77,7 +77,7 @@ mutex mtx; //벡터를 보호하기 위한 뮤텍스
 void drop(WordCreator* wordCreator, vector<string>& current_words, int& miss) {
     random_device rd;
     mt19937 gen(rd());
-    std::uniform_int_distribution<> distr(1000, 2000); //0.5초에서 2초 사이의 랜덤한 시간을 생성
+    std::uniform_int_distribution<> distr(500, 2000); //0.5초에서 2초 사이의 랜덤한 시간을 생성
 
     while (true) {
         this_thread::sleep_for(chrono::milliseconds(distr(gen))); //랜덤한 시간 동안 대기
