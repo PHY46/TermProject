@@ -183,7 +183,6 @@ int main() {
         wordCreator = new SpecialCharacterDecorator(wordCreator);
     }
 
-    vector<string> used_words; //사용된 문자열을 저장하는 벡터
     int miss = 0; //놓친 문자열의 수를 나타내는 변수
     int score = 0; //점수를 나타내는 변수
 
